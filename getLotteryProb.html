@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,minimum-scale=1,user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <link rel="shortcut icon" href="./static/favicon.ico" type="image/x-icon">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="3汽金融" />
+    <title></title>
+</head>
+
+<body>
+
+    <script type="text/javascript">
+        // 编写一个抽奖函数，要求返回【"a","b","c","d","e"】中其中一个，他们对应的概率分别为【10%，20%，15%，40%，15%】。
+
+        var probabilityList = [10, 20, 15, 40, 15],
+            prizeList = ['a', 'b', 'c', 'd', 'f'];
+
+        function GetProb(probList, prizeList) {
+            this.probList = probList;
+            this.prizeList = prizeList;
+        }
+
+        // 上帝之手-随机数
+        GetProb.prototype.getRandomNum = function (Max, Min) {
+            var Range = Max - Min;
+            var Rand = Math.random();
+            return (Min + Math.round(Rand * Range));
+        }
+
+        // 获取选中的值
+        GetProb.prototype.getAward = function () {
+            var sum = 0,
+                maxProb = this.probList.reduce(function (x, y) {
+                    return x + y;
+                }),
+                tianyi = this.getRandomNum(1, ++maxProb),
+                result = null;
+
+            // 确定概率的范围
+            for (var i = 0; i < probabilityList.length; i++) {
+                sum += probabilityList[i];
+                if (tianyi <= sum) {
+                    result = i;
+                    break;
+                }
+            }
+
+            return this.prizeList[result];
+        }
+
+        // 初始化
+        GetProb.prototype.init = function () {
+            console.log(this.getAward());
+        }
+
+        var prob = new GetProb(probabilityList, prizeList);
+        prob.init();
+    </script>
+</body>
+
+</html>
